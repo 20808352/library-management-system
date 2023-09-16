@@ -20,9 +20,13 @@ def addBook(Books_List):
 
     author = input("Enter the author's name: ")
     pubYear = input("Enter the publication year: ")
+    # If pubYear is less than 0 (invalid), require to input again
+    if (int(pubYear) < 0):
+        pubYear = input("Enter the publication year: ")
+
     new_book = Book(title, author, pubYear)
     Books_List.append(new_book)
-    print(f"Book {title} added!")
+    print(f"Book {title} added!\n")
 
 def removeBook(Books_List):
     # If books list is empty
@@ -77,11 +81,15 @@ def updateBook(Books_List):
                 new_title = input("Enter the new title: ")
                 new_author = input("Enter the new author's name: ")
                 new_pubYear = input("Enter the new publication year: ")
+                # If new_pubYear is less than 0 (invalid), require to input again
+                if (int(new_pubYear) < 0):
+                    new_pubYear = input("Enter the publication year: ")
                 book.title = new_title if new_title else book.title
                 book.author = new_author if new_author else book.author
                 book.pubYear = new_pubYear if new_pubYear else book.pubYear
-                print(f"Book {title} updated!")
+                print(f"Book {title} updated!\n")
                 return
+        #   Book has not been found
         print("Book not found!\n")
 
 # Placeholder for the main execution loop, if needed
@@ -97,7 +105,7 @@ def menu():
 
 def main():
     # A list to store books
-    # Passing the books list as parameter to functions
+    # Local variable to make accessible only to main function
     Books_List = []
 
     choice = int(0)
@@ -106,20 +114,26 @@ def main():
     while choice != 6:
         # If choice is out of range
         while choice > 6 or choice < 1:
+            #Call menu function
             menu()
             # Convert choice to int for comparison
             choice = int(input("Enter choice: "))
 
         # If choice is in menu range, display corresponding menu item
         if choice == 1:
+            # Call listAllBooks with parameter the Books_List
             listAllBooks(Books_List)
         elif choice == 2:
+            # Call addBook with parameter the Books_List
             addBook(Books_List)
         elif choice == 3:
+            # Call updateBook with parameter the Books_List
             updateBook(Books_List)
         elif choice == 4:
+            # Call removeBook with parameter the Books_List
             removeBook(Books_List)
         elif choice == 5:
+            # Call searchBook with parameter the Books_List
             searchBook(Books_List)
 
         # Choice is not exit, reset choice
