@@ -9,10 +9,10 @@ class Book:
     def __str__(self):
         return f"{self.title} by {self.author} (Published in {self.pubYear})"
     
-def addBook(Books_List):
+def addBook(booksList):
     title = input("Enter the book title: ")
     # Checks if book already exists
-    for book in Books_List:
+    for book in booksList:
         # Convert title to lower, to easy searching of book title
         if (book.title.lower() == title.lower()):
             print(f"Book {title} already exists")
@@ -21,72 +21,72 @@ def addBook(Books_List):
     author = input("Enter the author's name: ")
     pubYear = input("Enter the publication year: ")
     # If pubYear is less than 0 (invalid), require to input again
-    if (int(pubYear) < 0):
+    while (int(pubYear) < 0):
         pubYear = input("Enter the publication year: ")
 
-    new_book = Book(title, author, pubYear)
-    Books_List.append(new_book)
+    newBook = Book(title, author, pubYear)
+    booksList.append(newBook)
     print(f"Book {title} added!\n")
 
-def removeBook(Books_List):
+def removeBook(booksList):
     # If books list is empty
-    if (len(Books_List) == 0):
+    if (len(booksList) == 0):
         print("No Books yet\n")
     else:
         title = input("Enter the title of the book to remove: ")
-        book_found = False
-        for index, book in enumerate(Books_List):
+        bookFound = False
+        for index, book in enumerate(booksList):
             # Convert title to lower, to easy searching of book title
             if book.title.lower() == title.lower():
                 # Delete found book from list
-                del Books_List[index]
+                del booksList[index]
                 print(f"Book {title} removed!")
-                book_found = True
+                bookFound = True
                 return
-        if not book_found:
+        if not bookFound:
             print("Book not found!\n")
 
-def listAllBooks(Books_List):
+def listAllBooks(booksList):
     # If books list is empty
-    if (len(Books_List) == 0):
+    if (len(booksList) == 0):
         print("No Books yet\n")
     else:
         print("\n\t\tALL BOOKS")
-        for book in Books_List:
+        for book in booksList:
             print(book.title)
     #Time.sleep removed. Used to wait 2 seconds before displaying next statement
 
-def searchBook(Books_List):
+def searchBook(booksList):
     # If books list is empty
-    if (len(Books_List) == 0):
+    if (len(booksList) == 0):
         print("No Books yet\n")
     else:
         title = input("Enter the title of the book to search: ")
-        for book in Books_List:
+        for book in booksList:
             # Convert title to lower, to easy searching of book title
             if book.title.lower() == title.lower():
                 print(book)
                 return
     print("Book not found!\n")
 
-def updateBook(Books_List):
+def updateBook(booksList):
     # If books list is empty
-    if (len(Books_List) == 0):
+    if (len(booksList) == 0):
         print("No Books yet\n")
     else:
         title = input("Enter the title of the book to update: ")
-        for book in Books_List:
+        for book in booksList:
             # Convert title to lower, to easy searching of book title
             if book.title.lower() == title.lower():
-                new_title = input("Enter the new title: ")
-                new_author = input("Enter the new author's name: ")
-                new_pubYear = input("Enter the new publication year: ")
-                # If new_pubYear is less than 0 (invalid), require to input again
-                if (int(new_pubYear) < 0):
-                    new_pubYear = input("Enter the publication year: ")
-                book.title = new_title if new_title else book.title
-                book.author = new_author if new_author else book.author
-                book.pubYear = new_pubYear if new_pubYear else book.pubYear
+                newTitle = input("Enter the new title: ")
+                newAuthor = input("Enter the new author's name: ")
+                newPubYear = input("Enter the new publication year: ")
+                # If newPubYear is less than 0 (invalid), require to input again
+                if (int(newPubYear) < 0):
+                    newPubYear = input("Enter the publication year: ")
+                book.title = newTitle if newTitle else book.title
+                book.author = newAuthor if newAuthor else book.author
+                book.pubYear = newPubYear if newPubYear else book.pubYear
                 print(f"Book {title} updated!\n")
                 return
         #   Book has not been found
@@ -106,7 +106,7 @@ def menu():
 def main():
     # A list to store books
     # Local variable to make accessible only to main function
-    Books_List = []
+    booksList = []
 
     choice = int(0)
 
@@ -121,20 +121,20 @@ def main():
 
         # If choice is in menu range, display corresponding menu item
         if choice == 1:
-            # Call listAllBooks with parameter the Books_List
-            listAllBooks(Books_List)
+            # Call listAllBooks with parameter the booksList
+            listAllBooks(booksList)
         elif choice == 2:
-            # Call addBook with parameter the Books_List
-            addBook(Books_List)
+            # Call addBook with parameter the booksList
+            addBook(booksList)
         elif choice == 3:
-            # Call updateBook with parameter the Books_List
-            updateBook(Books_List)
+            # Call updateBook with parameter the booksList
+            updateBook(booksList)
         elif choice == 4:
-            # Call removeBook with parameter the Books_List
-            removeBook(Books_List)
+            # Call removeBook with parameter the booksList
+            removeBook(booksList)
         elif choice == 5:
-            # Call searchBook with parameter the Books_List
-            searchBook(Books_List)
+            # Call searchBook with parameter the booksList
+            searchBook(booksList)
 
         # Choice is not exit, reset choice
         if choice != 6:
