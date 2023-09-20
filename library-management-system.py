@@ -29,7 +29,7 @@ def addBook(booksList):
 
         newBook = Book(title, author, pubYear)
         booksList.append(newBook)
-        print(f"Book {title} added!\n")
+        print(f"Book \"{title}\" added!\n")
 
 def removeBook(booksList):
     # If books list is empty
@@ -55,8 +55,10 @@ def listAllBooks(booksList):
         print("No Books yet\n")
     else:
         print("\n\t\tALL BOOKS")
-        for book in booksList:
-            print(book.title)
+        for index, book in enumerate(booksList):
+            print(f"{index + 1}. {book.title}")
+            # Print new line to seperate from menu
+        print("\n")
     #Time.sleep removed. Used to wait 2 seconds before displaying next statement
 
 def searchBook(booksList):
