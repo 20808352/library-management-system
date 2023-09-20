@@ -22,14 +22,18 @@ def addBook(booksList):
 
     if not bookExist:
         author = input("Enter the author's name: ")
-        pubYear = input("Enter the publication year: ")
-        # If pubYear is less than 0 (invalid), require to input again
-        while (int(pubYear) < 0):
+        # Adding try except to handle the user input on int and prevent the program from craching
+        try:
             pubYear = input("Enter the publication year: ")
+            # If pubYear is less than 0 (invalid), require to input again
+            while (int(pubYear) < 0):
+                pubYear = input("Enter the publication year: ")
 
-        newBook = Book(title, author, pubYear)
-        booksList.append(newBook)
-        print(f"Book \"{title}\" added!\n")
+            newBook = Book(title, author, pubYear)
+            booksList.append(newBook)
+            print(f"Book \"{title}\" added!\n")
+        except:
+            print("Year input was not in a correct format")
 
 def removeBook(booksList):
     # If books list is empty
