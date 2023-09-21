@@ -1,39 +1,90 @@
+import datetime
+
 class Book:
     # Initialize book
-    def __init__(self, title, author, pubYear):
+    def __init__(self, title, author, pubYear, borrowed, borrowedBy):
         self.title = title
         self.author = author
         self.pubYear = pubYear
+        self.borrowed = borrowed
+        self.borrowedBy = borrowedBy
 
     # Return book
     def __str__(self):
         return f"{self.title} by {self.author} (Published in {self.pubYear})"
-    
-def addBook(booksList):
-    title = input("Enter the book title: ")
-    bookExist = False
+
+# Return index of book
+# If not found return -1
+def checkBookIndex(bookTitle, booksList):
+    bookIndex = -1
     # Checks if book already exists
     # While not end of list and book does not exist
-    for book in booksList and not bookExist:
+    # for index, book in enumerate(booksList) and bookIndex != -1:
+    for index, book in enumerate(booksList):
         # Convert title to lower, to easy searching of book title
-        if (book.title.lower() == title.lower()):
-            print(f"Book {title} already exists")
-            bookExist = True
+        if (book.title.lower() == bookTitle.lower()):
+            bookIndex = index
 
-    if not bookExist:
+    return bookIndex
+
+def borrowBook(booksList):
+    title = input("Enter the book title: ")
+    bookIndex = checkBookIndex(title, booksList)
+
+    if bookIndex != -1:
+        name = input("Enter your name: ")
+        # Set book as borrowed
+        booksList[bookIndex].borrowed = True
+        # Set name of person who borrowed book
+        booksList[bookIndex].borrowedBy = name
+        # Display message
+        print(f"{name} has borrowed {booksList[bookIndex]}\n")
+    else: 
+        print("Book does not exist\n")
+
+# Function to return borrowed book
+def returnBook(booksList):
+    title = input("Enter the book title: ")
+    bookIndex = checkBookIndex(title, booksList)
+
+    if bookIndex != -1:
+        # If book is borrowed
+        if booksList[bookIndex].borrowed == True:
+            name = input("Enter your name: ")
+            # If name matches person who borrowed, allow return
+            if (booksList[bookIndex].borrowedBy.lower() == name.lower()):
+                booksList[bookIndex].borrowed = False
+                booksList[bookIndex].borrowedBy = ""
+                print(f"{name} has returned {booksList[bookIndex]}\n")
+            else:
+                print("Borrower's name is not the same\n")
+        else:
+            print("Book has not been borrowed\n")
+    else: 
+        print("Book does not exist\n")
+
+def addBook(booksList):
+    title = input("Enter the book title: ")
+    bookIndex = checkBookIndex(title, booksList)
+
+    # Book does not exist
+    if bookIndex == -1:
         author = input("Enter the author's name: ")
         # Adding try except to handle the user input on int and prevent the program from craching
         try:
-            pubYear = input("Enter the publication year: ")
+            pubYear = int(input("Enter the publication year: "))
             # If pubYear is less than 0 (invalid), require to input again
             while (int(pubYear) < 0):
-                pubYear = input("Enter the publication year: ")
+                pubYear = int(input("Enter the publication year: "))
 
-            newBook = Book(title, author, pubYear)
+            # Create a new book with title, author, pubYear, not borrowed, max datetime, and no borrower Name
+            newBook = Book(title, author, pubYear, False, "")
             booksList.append(newBook)
             print(f"Book \"{title}\" added!\n")
         except:
-            print("Year input was not in a correct format")
+            print("Year input was not in a correct format.\n")
+    else:
+        print(f"Book {title} already exists\n")
 
 def removeBook(booksList):
     # If books list is empty
@@ -70,16 +121,13 @@ def searchBook(booksList):
     if (len(booksList) == 0):
         print("No Books yet\n")
     else:
-        bookFound = False
         title = input("Enter the title of the book to search: ")
-        # While not end of list and book is not found
-        for book in booksList and not bookFound:
-            # Convert title to lower, to easy searching of book title
-            if book.title.lower() == title.lower():
-                print(book)
-                bookFound = True
-        if not bookFound:
-            print("Book not found!\n")
+        bookIndex = checkBookIndex(title, booksList)
+
+        if bookIndex != -1:
+            print(booksList[bookIndex])
+        else:
+            print("Book does not exist")
 
 def updateBook(booksList):
     # If books list is empty
@@ -87,25 +135,23 @@ def updateBook(booksList):
         print("No Books yet\n")
     else:
         title = input("Enter the title of the book to update: ")
-        bookFound = False
-        # While not end of list and book is not found
-        for book in booksList and not bookFound:
-            # Convert title to lower, to easy searching of book title
-            if book.title.lower() == title.lower():
-                newTitle = input("Enter the new title: ")
-                newAuthor = input("Enter the new author's name: ")
-                newPubYear = input("Enter the new publication year: ")
-                # If newPubYear is less than 0 (invalid), require to input again
-                if (int(newPubYear) < 0):
-                    newPubYear = input("Enter the publication year: ")
-                book.title = newTitle if newTitle else book.title
-                book.author = newAuthor if newAuthor else book.author
-                book.pubYear = newPubYear if newPubYear else book.pubYear
-                print(f"Book {title} updated!\n")
-                bookFound = True
+        bookIndex = checkBookIndex(title, booksList)
+
+        if bookIndex != -1:
+            newTitle = input("Enter the new title: ")
+            newAuthor = input("Enter the new author's name: ")
+            newPubYear = input("Enter the new publication year: ")
+            # If newPubYear is less than 0 (invalid), require to input again
+            if (int(newPubYear) < 0):
+                newPubYear = input("Enter the publication year: ")
+            booksList[bookIndex].title = newTitle if newTitle else booksList[bookIndex].title
+            booksList[bookIndex].author = newAuthor if newAuthor else booksList[bookIndex].author
+            booksList[bookIndex].pubYear = newPubYear if newPubYear else booksList[bookIndex].pubYear
+            print(f"Book {title} updated!\n")
+                
         #   Book has not been found
-        if not bookFound:
-            print("Book not found!\n")
+        else:
+            print("Book not found!\n") 
 
 # Placeholder for the main execution loop, if needed
 # while True:
@@ -116,7 +162,9 @@ def menu():
     print("3. Update book")
     print("4. Delete book")
     print("5. Search book")
-    print("5. Exit")
+    print("6. Borrow book")
+    print("7. Return book")
+    print("8. Exit")
 
 def main():
     # A list to store books
@@ -126,9 +174,9 @@ def main():
     choice = int(0)
 
     # While not the exit choice, continue to prompt user to input choice
-    while choice != 6:
+    while choice != 8:
         # If choice is out of range
-        while choice > 6 or choice < 1:
+        while choice > 8 or choice < 1:
             #Call menu function
             menu()
             # Convert choice to int for comparison
@@ -150,9 +198,15 @@ def main():
         elif choice == 5:
             # Call searchBook with parameter the booksList
             searchBook(booksList)
+        elif choice == 6:
+            # Call borrowBook with parameter the booksList
+            borrowBook(booksList)
+        elif choice == 7:
+            # Call returnBook with parameter the booksList
+            returnBook(booksList)
 
         # Choice is not exit, reset choice
-        if choice != 6:
+        if choice != 8:
             choice = 0
 
 # Call main method
