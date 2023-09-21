@@ -31,16 +31,19 @@ def borrowBook(booksList):
     title = input("Enter the book title: ")
     bookIndex = checkBookIndex(title, booksList)
 
-    if bookIndex != -1:
-        name = input("Enter your name: ")
-        # Set book as borrowed
-        booksList[bookIndex].borrowed = True
-        # Set name of person who borrowed book
-        booksList[bookIndex].borrowedBy = name
-        # Display message
-        print(f"{name} has borrowed {booksList[bookIndex]}\n")
-    else: 
-        print("Book does not exist\n")
+    if (booksList[bookIndex].borrowed == True):
+        print("Book is already borrowed by someone else")
+    else:
+        if bookIndex != -1:
+            name = input("Enter your name: ")
+            # Set book as borrowed
+            booksList[bookIndex].borrowed = True
+            # Set name of person who borrowed book
+            booksList[bookIndex].borrowedBy = name
+            # Display message
+            print(f"{name} has borrowed {booksList[bookIndex]}\n")
+        else: 
+            print("Book does not exist\n")
 
 # Function to return borrowed book
 def returnBook(booksList):
