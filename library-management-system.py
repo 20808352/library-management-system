@@ -186,27 +186,28 @@ def main():
             choice = int(input("Enter choice: "))
 
         # If choice is in menu range, display corresponding menu item
-        if choice == 1:
-            # Call listAllBooks with parameter the booksList
-            listAllBooks(booksList)
-        elif choice == 2:
-            # Call addBook with parameter the booksList
-            addBook(booksList)
-        elif choice == 3:
-            # Call updateBook with parameter the booksList
-            updateBook(booksList)
-        elif choice == 4:
-            # Call removeBook with parameter the booksList
-            removeBook(booksList)
-        elif choice == 5:
-            # Call searchBook with parameter the booksList
-            searchBook(booksList)
-        elif choice == 6:
-            # Call borrowBook with parameter the booksList
-            borrowBook(booksList)
-        elif choice == 7:
-            # Call returnBook with parameter the booksList
-            returnBook(booksList)
+        match choice:
+            case 1:
+                # Call listAllBooks with parameter the booksList
+                listAllBooks(booksList)
+            case 2:
+                # Call addBook with parameter the booksList
+                addBook(booksList)
+            case 3:
+                # Call updateBook with parameter the booksList
+                updateBook(booksList)
+            case 4:
+                # Call removeBook with parameter the booksList
+                removeBook(booksList)
+            case 5:
+                # Call searchBook with parameter the booksList
+                searchBook(booksList)
+            case 6:
+                # Call borrowBook with parameter the booksList
+                borrowBook(booksList)
+            case 7:
+                # Call returnBook with parameter the booksList
+                returnBook(booksList)
 
         # Choice is not exit, reset choice
         if choice != 8:
